@@ -2,6 +2,7 @@ package com.zerobase.fastlms.member.controller;
 
 import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.model.MemberInput;
+import com.zerobase.fastlms.member.model.ResetPasswordInput;
 import com.zerobase.fastlms.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,18 +22,46 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @GetMapping("member/login")
-  public String login() {
+  @RequestMapping("/member/login")
+  public String login(
+      @RequestParam(value = "error", required = false) String error
+      , @RequestParam(value = "errorMessage", required = false) String errorMessage
+      , Model model
+  ) {
+    model.addAttribute("error", error);
+    model.addAttribute("errorMessage", errorMessage);
+
     return "member/login";
   }
 
-  @GetMapping("member/register")
+  @GetMapping("/member/find-password")
+  public String findPassword() {
+    return "member/find/find_password";
+  }
+
+  @PostMapping("/member/find-password")
+  public String findPasswordSubmit(
+      ResetPasswordInput parameter
+      , Model model
+  ) {
+    boolean result = false;
+
+    try {
+      result = memberService.sendResetPassword(parameter);
+    } catch (Exception e) {
+
+    }
+    model.addAttribute("result", result);
+
+    return "member/find/find_password_result";
+  }
+
+  @GetMapping("/member/register")
   public String register() {
-    System.out.println("GetMapping");
     return "member/register";
   }
 
-  @PostMapping("member/register")
+  @PostMapping("/member/register")
   public String registerSubmit(
       HttpServletRequest request
       , HttpServletResponse response
@@ -61,8 +92,38 @@ public class MemberController {
 
   @GetMapping("/member/info")
   public String memberInfo() {
+
     return "member/info";
   }
 
+  @GetMapping("/member/reset/password")
+  public String resetPassword(
+      Model model
+      , HttpServletRequest request
+  ) {
+    String uuid = request.getParameter("id");
+    model.addAttribute("uuid", uuid);
 
+    boolean result = memberService.checkResetPassword(uuid);
+    model.addAttribute("result", result);
+    
+    return "member/find/reset_password";
+  }
+
+  @PostMapping("/member/reset/password")
+  public String resetPasswordSubmit(
+      Model model
+      , ResetPasswordInput parameter
+  ) {
+    boolean result = false;
+    try {
+      result = memberService.resetPassword(parameter.getId(), parameter.getPassword());
+    } catch (Exception e) {
+
+    }
+
+    model.addAttribute("result", result);
+
+    return "member/find/reset_password_result";
+  }
 }

@@ -7,16 +7,14 @@
 <body>
 <div>
   <h1>회원가입</h1>
-  <!--
-  아이디(이메일), 이름, 전화번호, 비밀번호
-  -->
+  <div th:replace="~{/fragments/layout.html :: fragment-body-menu}"></div>
   <form method="post">
-    <div><input type="email" name="email" placeholder="이메일 입력" required></div>
+    <div><input type="email" name="userId" placeholder="이메일 입력" required></div>
     <div><input type="text" name="userName" placeholder="이름 입력" required></div>
     <div><input type="password" name="password" placeholder="비밀번호 입력" required></div>
     <div><input type="password" name="passwordConfirm" placeholder="확인 비밀번호 입력" required></div>
     <div><input type="tel" name="phone" placeholder="전화번호 입력" required></div>
-    <div><input type="submit" value="submit"></div>
+    <div><input type="submit" value="회원가입"></div>
   </form>
 </div>
 </body>

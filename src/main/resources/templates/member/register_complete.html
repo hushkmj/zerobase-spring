@@ -8,6 +8,7 @@
 <div>
   <div th:if="${result}">
     <h1>회원 가입 결과</h1>
+    <div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
     <p>회원가입이 완료되었습니다.</p>
   </div>
   <div th:if="${!result}">
