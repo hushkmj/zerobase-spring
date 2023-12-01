@@ -68,12 +68,15 @@ public class MemberServiceImpl implements MemberService {
   public boolean emailAuth(String uuid) {
 
     Optional<Member> optionalMember = memberRepository.findByEmailAuthKey(uuid);
-    System.out.println("### optionalMember: " + optionalMember);
     if (optionalMember.isEmpty()) {
       return false;
     }
 
     Member member = optionalMember.get();
+    if (member.isEmailAuthYn()) {
+      return false;
+    }
+
     member.setEmailAuthYn(true);
     member.setEmailAuthDt(LocalDateTime.now());
     memberRepository.save(member);
@@ -170,6 +173,10 @@ public class MemberServiceImpl implements MemberService {
 
     List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
     grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+    if (member.isAdminYn()) {
+      grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
     return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
   }
 }

@@ -1,8 +1,8 @@
 package com.zerobase.fastlms.member.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,5 +29,7 @@ public class Member {
 
   private String resetPasswordKey;
   private LocalDateTime resetPasswordLimitDt;
+
+  private boolean adminYn;
 
 }

@@ -1,11 +1,9 @@
 package com.zerobase.fastlms.configuration;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -26,9 +24,7 @@ public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     }
     setUseForward(true);
     setDefaultFailureUrl("/member/login?error=true");
-//    setDefaultFailureUrl("/");
     request.setAttribute("errorMessage", msg);
-//    msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
     System.out.println(msg);
 
     super.onAuthenticationFailure(request, response, exception);

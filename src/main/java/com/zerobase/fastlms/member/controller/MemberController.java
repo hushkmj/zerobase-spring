@@ -1,20 +1,16 @@
 package com.zerobase.fastlms.member.controller;
 
-import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.model.MemberInput;
 import com.zerobase.fastlms.member.model.ResetPasswordInput;
-import com.zerobase.fastlms.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -24,12 +20,7 @@ public class MemberController {
 
   @RequestMapping("/member/login")
   public String login(
-      @RequestParam(value = "error", required = false) String error
-      , @RequestParam(value = "errorMessage", required = false) String errorMessage
-      , Model model
   ) {
-    model.addAttribute("error", error);
-    model.addAttribute("errorMessage", errorMessage);
 
     return "member/login";
   }
@@ -106,7 +97,7 @@ public class MemberController {
 
     boolean result = memberService.checkResetPassword(uuid);
     model.addAttribute("result", result);
-    
+
     return "member/find/reset_password";
   }
 
